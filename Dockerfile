@@ -14,13 +14,18 @@ RUN set -euo pipefail && \
     apk add --no-cache gcc make musl-dev; \
     :
 
+ARG FLAGS="\
+--without-http_rewrite_module \
+--without-http_gzip_module \
+--with-http_sub_module \
+"
+
 RUN set -euo pipefail && \
     cd nginx; \
     ./auto/configure \
-        --without-http_rewrite_module \
-        --without-http_gzip_module \
         --prefix=/opt/nginx \
         --with-ld-opt="-Bstatic -static" \
+        ${FLAGS} \
         ; \
     make -j ${CORE_COUNT}; \
     make install; \
