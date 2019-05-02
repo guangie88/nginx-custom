@@ -14,10 +14,17 @@ RUN set -euo pipefail && \
     apk add --no-cache gcc make musl-dev; \
     :
 
+# Needed for gzip
+RUN set -euo pipefail && \
+    apk add --no-cache pcre-dev zlib-dev; \
+    :
+
+# When no without- are specified, this means none of the without- features are disabled
+# without-http_rewrite_module
+# without-http_gzip_module
 ARG FLAGS="\
---without-http_rewrite_module \
---without-http_gzip_module \
 --with-http_sub_module \
+--with-http_gunzip_module \
 "
 
 RUN set -euo pipefail && \
