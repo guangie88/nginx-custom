@@ -28,9 +28,10 @@ RUN set -euo pipefail && \
 # without-http_rewrite_module
 # without-http_gzip_module
 ARG FLAGS="\
+--with-http_gunzip_module \
+--with-http_gzip_static_module \
 --with-http_ssl_module \
 --with-http_sub_module \
---with-http_gunzip_module \
 "
 
 RUN set -euo pipefail && \
