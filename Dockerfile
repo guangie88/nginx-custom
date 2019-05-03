@@ -79,7 +79,7 @@ COPY ./default.conf ./conf/conf.d/
 
 RUN set -euo pipefail && \
     rm /opt/nginx/html/50x.html; \
-    mkdir -p /opt/nginx/run /opt/nginx/conf/conf.d; \
+    mkdir -p /opt/nginx/run /opt/nginx/tmp /opt/nginx/conf/conf.d; \
     chown -R ${USER}:${USER} /opt/nginx; \
     chown -R root:root /opt/nginx/sbin; \
     :
