@@ -15,18 +15,13 @@ RUN set -euo pipefail && \
 WORKDIR /workdir
 RUN git clone https://github.com/nginx/nginx.git -b ${NGINX_REV}
 
-RUN set -euo pipefail && \
-    apk add --no-cache gcc make musl-dev; \
-    :
-
-# Needed for gzip and SSL support
-RUN set -euo pipefail && \
-    apk add --no-cache pcre-dev zlib-dev openssl-dev; \
-    :
+RUN apk add --no-cache \
+        gcc make musl-dev \
+        # Needed for gzip and SSL support
+        pcre-dev zlib-dev openssl-dev \
+        ;
 
 # When no without- are specified, this means none of the without- features are disabled
-# without-http_rewrite_module
-# without-http_gzip_module
 ARG FLAGS="\
 --pid-path=/opt/nginx/run/nginx.pid \
 --http-log-path=/opt/nginx/logs/access.log \
@@ -70,7 +65,7 @@ RUN set -euo pipefail && \
     # Certificates for SSL
     apk add --no-cache ca-certificates; \
     # Add non-root user
-    adduser -h /opt/nginx -u 1000 -D ${USER}; \
+    adduser -h /opt/nginx -u 1001 -D ${USER}; \
     # Install Tera CLI if version is set
     if [ ! -z "${TERA_VERSION}" ]; then \
         mkdir -p /opt/nginx/conf/conf.tmpl.d; \
