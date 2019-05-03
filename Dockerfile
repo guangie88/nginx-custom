@@ -3,7 +3,13 @@ FROM alpine:3.9 as builder
 ARG NGINX_REV=release-1.16.0
 
 RUN set -euo pipefail && \
+    # For git checkout
     apk add --no-cache git; \
+    # For binary compression
+    wget https://github.com/upx/upx/releases/download/v3.95/upx-3.95-amd64_linux.tar.xz; \
+    tar xvf upx-3.95-amd64_linux.tar.xz; \
+    mv upx-3.95-amd64_linux/upx /usr/local/bin/; \
+    rm -r upx-3.95-amd64_linux upx-3.95-amd64_linux.tar.xz; \
     :
 
 WORKDIR /workdir
@@ -13,15 +19,16 @@ RUN set -euo pipefail && \
     apk add --no-cache gcc make musl-dev; \
     :
 
-# Needed for gzip
+# Needed for gzip and SSL support
 RUN set -euo pipefail && \
-    apk add --no-cache pcre-dev zlib-dev; \
+    apk add --no-cache pcre-dev zlib-dev openssl-dev; \
     :
 
 # When no without- are specified, this means none of the without- features are disabled
 # without-http_rewrite_module
 # without-http_gzip_module
 ARG FLAGS="\
+--with-http_ssl_module \
 --with-http_sub_module \
 --with-http_gunzip_module \
 "
@@ -37,6 +44,7 @@ RUN set -euo pipefail && \
     CORE_COUNT=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | sed -E 's/.+([[:digit:]]+)$/\1/gI'); \
     make -j ${CORE_COUNT}; \
     make install; \
+    upx --best /opt/nginx/sbin/nginx; \
     :
 
 # Release image
