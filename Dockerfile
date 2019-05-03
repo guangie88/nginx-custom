@@ -28,6 +28,14 @@ RUN set -euo pipefail && \
 # without-http_rewrite_module
 # without-http_gzip_module
 ARG FLAGS="\
+--pid-path=/opt/nginx/run/nginx.pid \
+--http-log-path=/opt/nginx/logs/access.log \
+--error-log-path=/opt/nginx/logs/error.log \
+--http-client-body-temp-path=/opt/nginx/tmp/client_body_temp \
+--http-proxy-temp-path=/opt/nginx/tmp/proxy_temp \
+--http-fastcgi-temp-path=/opt/nginx/tmp/fastcgi_temp \
+--http-uwsgi-temp-path=/opt/nginx/tmp/uwsgi_temp \
+--http-scgi-temp-path=/opt/nginx/tmp/scgi_temp \
 --with-http_gunzip_module \
 --with-http_gzip_static_module \
 --with-http_ssl_module \
@@ -79,7 +87,7 @@ COPY ./default.conf ./conf/conf.d/
 
 RUN set -euo pipefail && \
     rm /opt/nginx/html/50x.html; \
-    mkdir -p /opt/nginx/run /opt/nginx/tmp /opt/nginx/conf/conf.d; \
+    mkdir -p /opt/nginx/run /opt/nginx/logs /opt/nginx/tmp /opt/nginx/conf/conf.d; \
     chown -R ${USER}:${USER} /opt/nginx; \
     chown -R root:root /opt/nginx/sbin; \
     :
