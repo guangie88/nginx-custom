@@ -9,6 +9,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.16.0
     - REPO_REV=release-1.16.0
     - MODULES_LABEL=base
     - MODULES=""
@@ -16,6 +17,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.16.0
     - REPO_REV=release-1.16.0
     - MODULES_LABEL=base
     - MODULES=""
@@ -23,6 +25,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.16.0
     - REPO_REV=release-1.16.0
     - MODULES_LABEL=standard
     - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
@@ -30,6 +33,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.16.0
     - REPO_REV=release-1.16.0
     - MODULES_LABEL=standard
     - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
@@ -37,6 +41,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.15.12
     - REPO_REV=release-1.15.12
     - MODULES_LABEL=base
     - MODULES=""
@@ -44,6 +49,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.15.12
     - REPO_REV=release-1.15.12
     - MODULES_LABEL=base
     - MODULES=""
@@ -51,6 +57,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.15.12
     - REPO_REV=release-1.15.12
     - MODULES_LABEL=standard
     - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
@@ -58,6 +65,7 @@ matrix:
   - services: docker
     env:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.15.12
     - REPO_REV=release-1.15.12
     - MODULES_LABEL=standard
     - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
@@ -70,9 +78,9 @@ script:
   if [ -z "${TERA_VERSION}" ]; then
     TERA_TAG=""
   else
-    TERA_TAG="with-tera"
+    TERA_TAG="_with-tera"
   fi
-- TAG_NAME="${REPO_REV}_${MODULES_LABEL}_${TERA_TAG}"
+- TAG_NAME="${REPO_VER}_${MODULES_LABEL}${TERA_TAG}"
 - FULL_IMAGE_NAME="${IMAGE_NAME}:${TAG_NAME}"
 - |-
   docker build . -t ${FULL_IMAGE_NAME} \
