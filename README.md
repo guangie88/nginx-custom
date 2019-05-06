@@ -6,17 +6,28 @@ Dockerfile set-up to build statically linked NGINX from source with modules.
 
 ### Default build
 
-docker build . -t guangie88/test-nginx-custom:latest
-docker run --rm -it -p 8080:8080 guangie88/test-nginx-custom:latest
-
-### With Tera CLI for Jinja2 template interpolation
-
 ```bash
-docker build . --build-arg TERA_VERSION=v0.1.1 -t guangie88/test-nginx-custom:tera
-docker run --rm -it -p 8080:8080 guangie88/test-nginx-custom:tera
+docker build . -t guangie88/test-nginx-custom
+docker run --rm -it -p 8080:8080 guangie88/test-nginx-custom
 ```
 
-## TODO
+### With Basic SSL module
 
-Use `tera` to create out the `.travis.yml` from `.travis.yml.tmpl`, and form the
-`FLAGS` arguments for `docker build`.
+```bash
+docker build . \
+    --build-arg MODULES="--with-http_ssl_module" \
+    -t guangie88/test-nginx-custom
+
+docker run --rm -it -p 8080:8080 guangie88/test-nginx-custom
+```
+
+### With Tera CLI for Jinja2 template interpolation with SSL module
+
+```bash
+docker build . \
+    --build-arg TERA_VERSION=v0.1.1 \
+    --build-arg MODULES="--with-http_ssl_module" \
+    -t guangie88/test-nginx-custom
+
+docker run --rm -it -p 8080:8080 guangie88/test-nginx-custom
+```
