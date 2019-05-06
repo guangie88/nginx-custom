@@ -1,0 +1,13 @@
+builds:
+- url: https://github.com/nginx/nginx.git
+  revs:
+  - release-1.16.0
+  - release-1.15.12
+
+modules:
+  base: []
+  standard:
+  - --with-http_gunzip_module
+  - --with-http_gzip_static_module
+  - --with-http_ssl_module
+  - --with-http_sub_module
