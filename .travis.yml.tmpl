@@ -1,0 +1,48 @@
+{% set tera_opts = ["v0.1.1", ""] -%}
+language: bash
+
+env:
+  global:
+  - IMAGE_NAME=${DOCKER_USERNAME}/nginx-custom
+
+matrix:
+  include:
+{%- for build in c.builds %}
+{%- for rev in build.revs %}
+{%- for label, modules in c.modules %}
+{%- for tera_opt in tera_opts %}
+  - services: docker
+    env:
+    - REPO_GIT_URL={{ build.url }}
+    - REPO_REV={{ rev }}
+    - MODULES_LABEL={{ label }}
+    - MODULES="{{ modules | join(sep=" ") }}"
+    - TERA_VERSION={{ tera_opt }}
+{%- endfor %}
+{%- endfor %}
+{%- endfor %}
+{%- endfor %}
+  
+script:
+- docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+- |-
+  if [ -z "${TERA_VERSION}" ]; then
+    TERA_TAG=""
+  else
+    TERA_TAG="with-tera"
+  fi
+- TAG_NAME="${REPO_REV}_${MODULES_LABEL}_${TERA_TAG}"
+- FULL_IMAGE_NAME="${IMAGE_NAME}:${TAG_NAME}"
+- |-
+  docker build . -t ${FULL_IMAGE_NAME} \
+    --build-arg REPO_GIT_URL=${REPO_GIT_URL} \
+    --build-arg REPO_REV=${REPO_REV} \
+    --build-arg MODULES=${MODULES} \
+    --build-arg TERA_VERSION=${TERA_VERSION} \
+    ;
+# Just push, doesn't matter if it's TRAVIS_PULL_REQUEST false/true
+- docker push ${FULL_IMAGE_NAME};
+
+branches:
+  only:
+  - master

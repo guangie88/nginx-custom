@@ -1,0 +1,88 @@
+language: bash
+
+env:
+  global:
+  - IMAGE_NAME=${DOCKER_USERNAME}/nginx-custom
+
+matrix:
+  include:
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.16.0
+    - MODULES_LABEL=base
+    - MODULES=""
+    - TERA_VERSION=v0.1.1
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.16.0
+    - MODULES_LABEL=base
+    - MODULES=""
+    - TERA_VERSION=
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.16.0
+    - MODULES_LABEL=standard
+    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - TERA_VERSION=v0.1.1
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.16.0
+    - MODULES_LABEL=standard
+    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - TERA_VERSION=
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.15.12
+    - MODULES_LABEL=base
+    - MODULES=""
+    - TERA_VERSION=v0.1.1
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.15.12
+    - MODULES_LABEL=base
+    - MODULES=""
+    - TERA_VERSION=
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.15.12
+    - MODULES_LABEL=standard
+    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - TERA_VERSION=v0.1.1
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_REV=release-1.15.12
+    - MODULES_LABEL=standard
+    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - TERA_VERSION=
+  
+script:
+- docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+- |-
+  if [ -z "${TERA_VERSION}" ]; then
+    TERA_TAG=""
+  else
+    TERA_TAG="with-tera"
+  fi
+- TAG_NAME="${REPO_REV}_${MODULES_LABEL}_${TERA_TAG}"
+- FULL_IMAGE_NAME="${IMAGE_NAME}:${TAG_NAME}"
+- |-
+  docker build . -t ${FULL_IMAGE_NAME} \
+    --build-arg REPO_GIT_URL=${REPO_GIT_URL} \
+    --build-arg REPO_REV=${REPO_REV} \
+    --build-arg MODULES=${MODULES} \
+    --build-arg TERA_VERSION=${TERA_VERSION} \
+    ;
+# Just push, doesn't matter if it's TRAVIS_PULL_REQUEST false/true
+- docker push ${FULL_IMAGE_NAME};
+
+branches:
+  only:
+  - master

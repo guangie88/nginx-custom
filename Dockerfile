@@ -1,6 +1,6 @@
 FROM alpine:3.9 as builder
 
-ARG NGINX_REV=release-1.16.0
+ARG REPO_REV=release-1.16.0
 
 RUN set -euo pipefail && \
     # For git checkout
@@ -13,7 +13,7 @@ RUN set -euo pipefail && \
     :
 
 WORKDIR /workdir
-RUN git clone https://github.com/nginx/nginx.git -b ${NGINX_REV}
+RUN git clone ${REPO_GIT_URL} -b ${REPO_REV}
 
 RUN apk add --no-cache \
         gcc make musl-dev \
@@ -21,7 +21,6 @@ RUN apk add --no-cache \
         pcre-dev zlib-dev openssl-dev \
         ;
 
-# When no without- are specified, this means none of the without- features are disabled
 ARG FLAGS="\
 --pid-path=/opt/nginx/run/nginx.pid \
 --http-log-path=/opt/nginx/logs/access.log \
@@ -31,11 +30,10 @@ ARG FLAGS="\
 --http-fastcgi-temp-path=/opt/nginx/tmp/fastcgi_temp \
 --http-uwsgi-temp-path=/opt/nginx/tmp/uwsgi_temp \
 --http-scgi-temp-path=/opt/nginx/tmp/scgi_temp \
---with-http_gunzip_module \
---with-http_gzip_static_module \
---with-http_ssl_module \
---with-http_sub_module \
 "
+
+# When no without- are specified, this means none of the without- features are disabled
+ARG MODULES=""
 
 RUN set -euo pipefail && \
     # Build and statically link with max physical number of cores
@@ -44,6 +42,7 @@ RUN set -euo pipefail && \
         --prefix=/opt/nginx \
         --with-ld-opt="-Bstatic -static" \
         ${FLAGS} \
+        ${MODULES} \
         ; \
     CORE_COUNT=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | sed -E 's/.+([[:digit:]]+)$/\1/gI'); \
     make -j ${CORE_COUNT}; \
