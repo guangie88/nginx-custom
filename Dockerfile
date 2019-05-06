@@ -1,5 +1,6 @@
 FROM alpine:3.9 as builder
 
+ARG REPO_GIT_URL=https://github.com/nginx/nginx.git
 ARG REPO_REV=release-1.16.0
 
 RUN set -euo pipefail && \
