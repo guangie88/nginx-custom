@@ -65,7 +65,7 @@ RUN set -euo pipefail && \
     # Certificates for SSL
     apk add --no-cache ca-certificates; \
     # Add non-root user
-    adduser -h /opt/nginx -u 1001 -D ${USER}; \
+    adduser -h /opt/nginx -u 1000 -G root -D ${USER}; \
     # Install Tera CLI if version is set
     if [ ! -z "${TERA_VERSION}" ]; then \
         mkdir -p /opt/nginx/conf/conf.tmpl.d; \
@@ -80,10 +80,12 @@ COPY ./run.sh ./
 COPY ./nginx.conf ./conf/
 COPY ./default.conf ./conf/conf.d/
 
+# Set up the required directories for the non-root user
 RUN set -euo pipefail && \
     rm /opt/nginx/html/50x.html; \
     mkdir -p /opt/nginx/run /opt/nginx/logs /opt/nginx/tmp /opt/nginx/conf/conf.d; \
-    chown -R ${USER}:${USER} /opt/nginx; \
+    chown -R ${USER}:root /opt/nginx; \
+    chmod g+w /opt/nginx/run /opt/nginx/logs /opt/nginx/tmp /opt/nginx/conf/conf.d; \
     chown -R root:root /opt/nginx/sbin; \
     :
 
