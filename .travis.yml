@@ -64,6 +64,7 @@ matrix:
     - TERA_VERSION=
   
 script:
+- set -euo pipefail
 - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
 - |-
   if [ -z "${TERA_VERSION}" ]; then
@@ -75,10 +76,10 @@ script:
 - FULL_IMAGE_NAME="${IMAGE_NAME}:${TAG_NAME}"
 - |-
   docker build . -t ${FULL_IMAGE_NAME} \
-    --build-arg REPO_GIT_URL=${REPO_GIT_URL} \
-    --build-arg REPO_REV=${REPO_REV} \
-    --build-arg MODULES=${MODULES} \
-    --build-arg TERA_VERSION=${TERA_VERSION} \
+    --build-arg REPO_GIT_URL="${REPO_GIT_URL}" \
+    --build-arg REPO_REV="${REPO_REV}" \
+    --build-arg MODULES="${MODULES}" \
+    --build-arg TERA_VERSION="${TERA_VERSION}" \
     ;
 # Just push, doesn't matter if it's TRAVIS_PULL_REQUEST false/true
 - docker push ${FULL_IMAGE_NAME};
