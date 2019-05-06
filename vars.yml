@@ -1,8 +1,8 @@
 builds:
 - url: https://github.com/nginx/nginx.git
-  revs:
-  - release-1.16.0
-  - release-1.15.12
+  vers:
+  - 1.16.0
+  - 1.15.12
 
 modules:
   base: []
