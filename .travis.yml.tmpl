@@ -8,13 +8,14 @@ env:
 matrix:
   include:
 {%- for build in c.builds %}
-{%- for rev in build.revs %}
+{%- for ver in build.vers %}
 {%- for label, modules in c.modules %}
 {%- for tera_opt in tera_opts %}
   - services: docker
     env:
     - REPO_GIT_URL={{ build.url }}
-    - REPO_REV={{ rev }}
+    - REPO_VER={{ ver }}
+    - REPO_REV=release-{{ ver }}
     - MODULES_LABEL={{ label }}
     - MODULES="{{ modules | join(sep=" ") }}"
     - TERA_VERSION={{ tera_opt }}
@@ -30,9 +31,9 @@ script:
   if [ -z "${TERA_VERSION}" ]; then
     TERA_TAG=""
   else
-    TERA_TAG="with-tera"
+    TERA_TAG="_with-tera"
   fi
-- TAG_NAME="${REPO_REV}_${MODULES_LABEL}_${TERA_TAG}"
+- TAG_NAME="${REPO_VER}_${MODULES_LABEL}${TERA_TAG}"
 - FULL_IMAGE_NAME="${IMAGE_NAME}:${TAG_NAME}"
 - |-
   docker build . -t ${FULL_IMAGE_NAME} \
