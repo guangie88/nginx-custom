@@ -24,7 +24,6 @@ matrix:
 {%- endfor %}
   
 script:
-- set -e
 - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
 - |-
   if [ -z "${TERA_VERSION}" ]; then
