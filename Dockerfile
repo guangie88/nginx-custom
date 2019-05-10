@@ -19,7 +19,7 @@ RUN git clone ${REPO_GIT_URL} -b ${REPO_REV}
 RUN apk add --no-cache \
         gcc make musl-dev \
         # Needed for gzip and SSL support
-        pcre-dev zlib-dev openssl-dev \
+        pcre-dev zlib-dev openssl-dev libxslt-dev \
         ;
 
 ARG FLAGS="\
