@@ -48,7 +48,7 @@ RUN set -euo pipefail && \
     CORE_COUNT=$(cat /proc/cpuinfo | grep -m 1 "cpu cores" | sed -E 's/.+([[:digit:]]+)$/\1/gI'); \
     make -j ${CORE_COUNT}; \
     make install; \
-    upx --best /opt/nginx/sbin/nginx; \
+    upx --best --lzma /opt/nginx/sbin/nginx; \
     :
 
 # Release image
