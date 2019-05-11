@@ -27,8 +27,24 @@ matrix:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
     - REPO_VER=1.16.0
     - REPO_REV=release-1.16.0
+    - MODULES_LABEL=full
+    - MODULES="--with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_image_filter_module --with-http_geoip_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module"
+    - TERA_VERSION=v0.1.1
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.16.0
+    - REPO_REV=release-1.16.0
+    - MODULES_LABEL=full
+    - MODULES="--with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_image_filter_module --with-http_geoip_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module"
+    - TERA_VERSION=
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.16.0
+    - REPO_REV=release-1.16.0
     - MODULES_LABEL=standard
-    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - MODULES="--with-http_ssl_module --with-http_sub_module --with-http_gunzip_module --with-http_gzip_static_module"
     - TERA_VERSION=v0.1.1
   - services: docker
     env:
@@ -36,7 +52,7 @@ matrix:
     - REPO_VER=1.16.0
     - REPO_REV=release-1.16.0
     - MODULES_LABEL=standard
-    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - MODULES="--with-http_ssl_module --with-http_sub_module --with-http_gunzip_module --with-http_gzip_static_module"
     - TERA_VERSION=
   - services: docker
     env:
@@ -59,8 +75,24 @@ matrix:
     - REPO_GIT_URL=https://github.com/nginx/nginx.git
     - REPO_VER=1.15.12
     - REPO_REV=release-1.15.12
+    - MODULES_LABEL=full
+    - MODULES="--with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_image_filter_module --with-http_geoip_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module"
+    - TERA_VERSION=v0.1.1
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.15.12
+    - REPO_REV=release-1.15.12
+    - MODULES_LABEL=full
+    - MODULES="--with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module --with-http_image_filter_module --with-http_geoip_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_auth_request_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module"
+    - TERA_VERSION=
+  - services: docker
+    env:
+    - REPO_GIT_URL=https://github.com/nginx/nginx.git
+    - REPO_VER=1.15.12
+    - REPO_REV=release-1.15.12
     - MODULES_LABEL=standard
-    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - MODULES="--with-http_ssl_module --with-http_sub_module --with-http_gunzip_module --with-http_gzip_static_module"
     - TERA_VERSION=v0.1.1
   - services: docker
     env:
@@ -68,7 +100,7 @@ matrix:
     - REPO_VER=1.15.12
     - REPO_REV=release-1.15.12
     - MODULES_LABEL=standard
-    - MODULES="--with-http_gunzip_module --with-http_gzip_static_module --with-http_ssl_module --with-http_sub_module"
+    - MODULES="--with-http_ssl_module --with-http_sub_module --with-http_gunzip_module --with-http_gzip_static_module"
     - TERA_VERSION=
   
 script:
