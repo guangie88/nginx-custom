@@ -19,7 +19,7 @@ RUN git clone ${REPO_GIT_URL} -b ${REPO_REV}
 RUN apk add --no-cache \
         gcc linux-headers make musl-dev \
         # Needed for gzip and SSL support
-        pcre-dev zlib-dev openssl-dev libxslt-dev \
+        pcre-dev zlib-dev openssl-dev libxslt-dev gd-dev \
         libjpeg-turbo-dev libpng-dev libpng-static freetype-dev freetype-static bzip2-dev \
         ;
 
