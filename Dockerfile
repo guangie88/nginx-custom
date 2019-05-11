@@ -20,7 +20,7 @@ RUN apk add --no-cache \
         # Basic dev requirements
         gcc linux-headers make musl-dev \
         # Direct modules requirements
-        pcre-dev zlib-dev openssl-dev libxslt-dev gd-dev \
+        pcre-dev zlib-dev openssl-dev libxslt-dev gd-dev geoip-dev \
         # Other static linking libraries requirements
         libjpeg-turbo-dev libpng-dev libpng-static freetype-dev freetype-static bzip2-dev \
         ;
