@@ -17,9 +17,10 @@ WORKDIR /workdir
 RUN git clone ${REPO_GIT_URL} -b ${REPO_REV}
 
 RUN apk add --no-cache \
-        gcc make musl-dev \
+        gcc linux-headers make musl-dev \
         # Needed for gzip and SSL support
-        pcre-dev zlib-dev openssl-dev libxslt \
+        pcre-dev zlib-dev openssl-dev libxslt-dev \
+        libjpeg-turbo-dev libpng-dev libpng-static freetype-dev freetype-static bzip2-dev \
         ;
 
 ARG FLAGS="\
@@ -39,6 +40,9 @@ ARG MODULES=""
 RUN set -euo pipefail && \
     # Build and statically link with max physical number of cores
     cd nginx; \
+    # For static linking, the link order matters and there are undefined symbols in both xslt and xml2
+    sed -i 's/ngx_feature_libs="-lxml2 -lxslt"/ngx_feature_libs="-lxslt -lxml2 -lz"/g' auto/lib/libxslt/conf; \
+    sed -i 's/ngx_feature_libs="-lgd"/ngx_feature_libs="-lgd -ljpeg -lpng -lfreetype -lbz2"/g' auto/lib/libgd/conf; \
     ./auto/configure \
         --prefix=/opt/nginx \
         --with-ld-opt="-Bstatic -static" \
